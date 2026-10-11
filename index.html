@@ -371,6 +371,8 @@ footer{text-align:center;color:var(--muted);font-size:14px;padding:10px 0 30px}
 @media (max-width:560px){.sort .row{grid-template-columns:1fr}}
 .next{display:flex;gap:12px;align-items:flex-start;border:1.5px dashed var(--brand);border-radius:16px;padding:14px 16px;background:var(--brand-soft)}
 .next .ic{font-size:26px;line-height:1}
+.blank{display:inline-block;min-width:7em;min-height:1.5em;vertical-align:bottom;text-align:center;cursor:default;line-height:1.4}
+.blank.right{color:var(--ok);border-color:var(--ok);font-weight:900}
 </style>
 </head>
 <body>
@@ -413,7 +415,7 @@ footer{text-align:center;color:var(--muted);font-size:14px;padding:10px 0 30px}
     <div class="review">
       <div class="rv"><span class="num">1</span><div><strong>알짜힘</strong> : 한 물체에 여러 힘이 동시에 작용할 때 이 힘들과 같은 효과를 나타내는 하나의 힘</div></div>
       <div class="rv"><span class="num">2</span><div><strong>운동 상태</strong> : 물체의 운동 방향과 빠르기(<strong>속력</strong>)</div></div>
-      <div class="rv q" style="border-top:1px solid var(--line);padding:12px 14px;margin:0"><span class="num">3</span><div><strong>힘의 평형</strong> : 물체에 작용하는 알짜힘이 <input class="blank" data-ans="0|영" aria-label="힘의 평형 빈칸" style="width:4em">인 상태
+      <div class="rv q" style="border-top:1px solid var(--line);padding:12px 14px;margin:0"><span class="num">3</span><div><strong>힘의 평형</strong> : 물체에 작용하는 알짜힘이 <span class="blank" data-show="0" style="width:4em"></span>인 상태
         <div style="margin-top:6px"><button class="btn small" data-blank>정답 확인</button></div><div class="fb"></div></div></div>
     </div>
   </section>
@@ -433,7 +435,7 @@ footer{text-align:center;color:var(--muted);font-size:14px;padding:10px 0 30px}
     <figure class="fig"><img src="images/ski-jump-sky.jpg" alt="파란 하늘 높이 날아오른 스키 점프 선수"></figure>
     <div class="story">스키 점프 선수가 몸을 최대한 웅크린 채 경사면을 빠른 속력으로 내려오고 있어. 도약대에 다다른 선수는 무릎과 몸을 동시에 쭉 펴면서 점프를 하더니 운동 방향이 바뀌며 하늘 높이 날아오르는 거야. 선수는 아름다운 곡선을 그리며 한참을 날아서 바닥에 안전하게 착지했어.</div>
     <div class="q" style="border-top:0;padding-top:0">
-      <div class="ask"><span class="num">🤔</span><div><strong>스키 점프를 하는 동안 선수의 운동 상태는 왜 변한 것일까?</strong><br>스키 점프를 하는 동안 선수의 <input class="blank" data-ans="운동상태|운동상태(속력과방향)|속력과방향|속력과운동방향" aria-label="빈칸 1">은/는 계속 변한다. 이것은 경사면과 도약대의 모양에 의한 영향도 받지만, 가장 큰 원인은 선수가 <input class="blank" data-ans="중력" aria-label="빈칸 2" style="width:5em">의 영향을 받기 때문이다.</div></div>
+      <div class="ask"><span class="num">🤔</span><div><strong>스키 점프를 하는 동안 선수의 운동 상태는 왜 변한 것일까?</strong><br>스키 점프를 하는 동안 선수의 <span class="blank" data-show="운동 상태"></span>은/는 계속 변한다. 이것은 경사면과 도약대의 모양에 의한 영향도 받지만, 가장 큰 원인은 선수가 <span class="blank" data-show="중력" style="width:5em"></span>의 영향을 받기 때문이다.</div></div>
       <button class="btn small" data-blank>정답 확인</button>
       <div class="fb"></div>
     </div>
@@ -501,9 +503,9 @@ footer{text-align:center;color:var(--muted);font-size:14px;padding:10px 0 30px}
     <h3 style="margin:22px 0 6px;font-size:20px">📝 질문</h3>
     <div class="q" style="border-top:0;padding-top:0">
       <div class="ask"><span class="num">?</span><div>공과 나란한 방향으로 바람을 보낼 때와 나란하지 않은 방향으로 바람을 보낼 때 공의 운동 상태는 어떻게 변하는가?<br><br>
-        ▶ 공과 나란한 방향으로 바람을 보낼 때는 탁구공의 운동 방향은 <input class="blank" data-ans="변하지않고|변하지않는다|안변하고" aria-label="빈칸 1">, 속력이 <input class="blank" data-ans="빨라지거나느려진다|빨라지거나느려지고|빨라지거나느려짐" aria-label="빈칸 2" style="width:10em">.
-        탁구공의 운동 방향과 같은 방향으로 바람을 보내면 탁구공의 속력이 <input class="blank" data-ans="빨라지고|빨라진다|빨라짐|증가하고|증가한다" aria-label="빈칸 3">, 반대 방향으로 바람을 보내면 탁구공의 속력이 <input class="blank" data-ans="느려진다|느려지고|느려짐|감소한다|감소하고" aria-label="빈칸 4">.
-        탁구공의 운동 방향과 나란하지 않은 방향으로 바람을 보내면 탁구공의 <input class="blank" data-ans="속력|빠르기" aria-label="빈칸 5" style="width:5em">과 <input class="blank" data-ans="운동방향|방향|운동" aria-label="빈칸 6" style="width:6em">이 변한다.</div></div>
+        ▶ 공과 나란한 방향으로 바람을 보낼 때는 탁구공의 운동 방향은 <span class="blank" data-show="변하지 않고"></span>, 속력이 <span class="blank" data-show="빨라지거나 느려진다" style="width:10em"></span>.
+        탁구공의 운동 방향과 같은 방향으로 바람을 보내면 탁구공의 속력이 <span class="blank" data-show="빨라지고"></span>, 반대 방향으로 바람을 보내면 탁구공의 속력이 <span class="blank" data-show="느려진다"></span>.
+        탁구공의 운동 방향과 나란하지 않은 방향으로 바람을 보내면 탁구공의 <span class="blank" data-show="속력" style="width:5em"></span>과 <span class="blank" data-show="운동 방향" style="width:6em"></span>이 변한다.</div></div>
       <button class="btn small" data-blank>정답 확인</button>
       <button class="btn small ghost" data-reveal="r-lab">예시 답안 보기</button>
       <div class="fb"></div>
@@ -521,10 +523,10 @@ footer{text-align:center;color:var(--muted);font-size:14px;padding:10px 0 30px}
       <div class="grid3">
         <div class="mcard"><h3>운동 방향과 나란한 방향으로<br>힘이 작용할 때</h3>
           <figure class="fig"><img src="images/v16-parallel.jpg" alt="같은 방향의 힘을 받아 점점 간격이 넓어지며 직선으로 움직이는 공"></figure>
-          <p>➡ 물체의 <input class="blank" data-ans="속력|빠르기" aria-label="나란한 방향 빈칸">이/가 변한다.</p></div>
+          <p>➡ 물체의 <span class="blank" data-show="속력"></span>이/가 변한다.</p></div>
         <div class="mcard"><h3>운동 방향과 수직 방향으로<br>힘이 작용할 때</h3>
           <figure class="fig"><img src="images/v16-perpendicular.jpg" alt="수직 방향의 힘을 받아 운동 방향이 아래로 꺾이는 공"></figure>
-          <p>➡ 물체의 <input class="blank" data-ans="운동방향|방향" aria-label="수직 방향 빈칸">이/가 변한다.</p></div>
+          <p>➡ 물체의 <span class="blank" data-show="운동 방향"></span>이/가 변한다.</p></div>
         <div class="mcard"><h3>운동 방향과 비스듬한 방향으로<br>힘이 작용할 때</h3>
           <figure class="fig"><img src="images/v16-oblique.jpg" alt="비스듬한 방향의 힘을 받아 간격이 넓어지며 방향이 꺾이는 공"></figure>
           <p>➡ 물체의 <strong>속력과 운동 방향이 모두</strong> 변한다.</p></div>
@@ -538,7 +540,7 @@ footer{text-align:center;color:var(--muted);font-size:14px;padding:10px 0 30px}
       <div class="card"><h3>⬅️ 운동 방향과 반대 방향의 힘</h3><p style="margin:0">물체의 속력이 <strong>감소</strong>한다.<br><span style="color:var(--muted);font-size:15px">예) 브레이크를 밟은 자동차, 위로 던져 올라가는 공 등</span></p></div>
     </div>
     <div class="q">
-      <div class="ask"><span class="num">!</span><div>이와 같이 물체에 작용하는 <input class="blank" data-ans="알짜힘" aria-label="알짜힘 빈칸">이 0이 아니면 물체의 운동 상태(속력이나 운동 방향)가 변한다.</div></div>
+      <div class="ask"><span class="num">!</span><div>이와 같이 물체에 작용하는 <span class="blank" data-show="알짜힘"></span>이 0이 아니면 물체의 운동 상태(속력이나 운동 방향)가 변한다.</div></div>
       <button class="btn small" data-blank>정답 확인</button>
       <div class="fb"></div>
     </div>
@@ -554,13 +556,13 @@ footer{text-align:center;color:var(--muted);font-size:14px;padding:10px 0 30px}
       <div class="grid3">
         <div class="mcard"><h3>스키 점프 선수</h3>
           <figure class="fig"><img src="images/ski-jumper.jpg" alt="빗면을 내려오는 스키 점프 선수"></figure>
-          <p>선수가 빗면을 내려올 때 선수의 운동 방향과 <input class="blank" data-ans="나란한|같은" aria-label="스키 점프 빈칸"> 방향으로 힘이 작용해 <strong>속력</strong>이 변하는 운동을 한다.</p></div>
+          <p>선수가 빗면을 내려올 때 선수의 운동 방향과 <span class="blank" data-show="나란한"></span> 방향으로 힘이 작용해 <strong>속력</strong>이 변하는 운동을 한다.</p></div>
         <div class="mcard"><h3>대관람차</h3>
           <figure class="fig"><img src="images/ferris-wheel.jpg" alt="빙글빙글 도는 대관람차"></figure>
-          <p>관람차의 운동 방향과 <input class="blank" data-ans="수직" aria-label="대관람차 빈칸"> 방향으로 힘이 작용해 <strong>운동 방향</strong>이 변하는 운동을 한다.</p></div>
+          <p>관람차의 운동 방향과 <span class="blank" data-show="수직"></span> 방향으로 힘이 작용해 <strong>운동 방향</strong>이 변하는 운동을 한다.</p></div>
         <div class="mcard"><h3>농구 선수가 비스듬히 던진 공</h3>
           <figure class="fig"><img src="images/basketball-throw.jpg" alt="휠체어 농구 선수가 비스듬히 던진 공이 곡선을 그리며 날아가는 모습"></figure>
-          <p>공의 운동 방향과 <input class="blank" data-ans="비스듬한|비스듬" aria-label="농구공 빈칸"> 방향으로 힘이 작용해 <strong>속력과 운동 방향이 모두</strong> 변하는 운동을 한다.</p></div>
+          <p>공의 운동 방향과 <span class="blank" data-show="비스듬한"></span> 방향으로 힘이 작용해 <strong>속력과 운동 방향이 모두</strong> 변하는 운동을 한다.</p></div>
       </div>
       <p style="text-align:center;font-size:15px;color:var(--muted);margin:8px 0">그림 Ⅴ-17 일상생활에서 힘이 작용할 때 물체의 운동</p>
       <button class="btn small" data-blank>정답 확인</button>
@@ -668,18 +670,13 @@ footer{text-align:center;color:var(--muted);font-size:14px;padding:10px 0 30px}
     });
   });
   document.querySelectorAll('[data-blank]').forEach(function(b){
-    var q=b.closest('.q'), inps=q.querySelectorAll('.blank'), fb=q.querySelector('.fb');
-    function go(){
-      var all=true, empty=false;
-      inps.forEach(function(inp){
-        var v=inp.value.replace(/\s/g,''), ok=inp.dataset.ans.split('|').indexOf(v)>-1;
-        if(!v)empty=true; if(!ok)all=false;
-        inp.classList.toggle('right',ok); inp.classList.toggle('wrong',!ok);
-      });
-      showFb(fb,all,all?'정답! 🎉':(empty?'빈칸을 모두 채운 뒤 확인해 보자.':'빨간 빈칸을 다시 생각해 보자. 개념 설명을 다시 읽어 봐요.'));
-    }
-    b.addEventListener('click',go);
-    inps.forEach(function(i){i.addEventListener('keydown',function(e){if(e.key==='Enter')go();});});
+    var q=b.closest('.q'), spans=q.querySelectorAll('.blank'), fb=q.querySelector('.fb'), on=false;
+    b.addEventListener('click',function(){
+      on=!on;
+      spans.forEach(function(s){ s.textContent=on?s.dataset.show:''; s.classList.toggle('right',on); });
+      b.textContent=on?'정답 숨기기':'정답 확인';
+      if(fb){fb.classList.remove('show');}
+    });
   });
   document.querySelectorAll('[data-match-check]').forEach(function(b){
     var q=b.closest('.q'), fb=q.querySelector('.fb');
