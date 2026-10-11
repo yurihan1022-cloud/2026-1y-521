@@ -1,0 +1,811 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>힘이 작용할 때 물체의 운동 | 중학교 과학 1</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+
+:root{
+  --bg:#F3F6FB; --surface:#FFFFFF; --ink:#1D2433; --muted:#5B6578; --line:#DCE3EE;
+  --brand:#0E8A7E; --brand-soft:#E0F3F1; --brand-ink:#FFFFFF;
+  --f1:#E0413A; --f1-soft:#FDE9E8; --f2:#1F63C8; --f2-soft:#E6EEFB;
+  --net:#7B3FD6; --net-soft:#F1EAFD;
+  --ok:#1E9E62; --ok-soft:#E3F6EC; --bad:#D6453D; --bad-soft:#FCE8E7;
+  --note:#FFF6DB; --note-line:#F0D98A;
+  --grid:#D6E4F3; --grid-major:#AFC8E6; --lane:#8FA9C9;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#121722; --surface:#1B2230; --ink:#E8EDF6; --muted:#9AA6BA; --line:#2C3547;
+    --brand:#3CC4B4; --brand-soft:#16312F; --brand-ink:#0D1A19;
+    --f1:#FF6B63; --f1-soft:#3A1F20; --f2:#5B9BFF; --f2-soft:#1B2A45;
+    --net:#B38CFF; --net-soft:#2A2140;
+    --ok:#3ECF8E; --ok-soft:#173427; --bad:#FF7A72; --bad-soft:#3A1F20;
+    --note:#2F2A1A; --note-line:#6B5B24;
+    --grid:#243246; --grid-major:#34496A; --lane:#4E6A92;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#121722; --surface:#1B2230; --ink:#E8EDF6; --muted:#9AA6BA; --line:#2C3547;
+  --brand:#3CC4B4; --brand-soft:#16312F; --brand-ink:#0D1A19;
+  --f1:#FF6B63; --f1-soft:#3A1F20; --f2:#5B9BFF; --f2-soft:#1B2A45;
+  --net:#B38CFF; --net-soft:#2A2140;
+  --ok:#3ECF8E; --ok-soft:#173427; --bad:#FF7A72; --bad-soft:#3A1F20;
+  --note:#2F2A1A; --note-line:#6B5B24;
+  --grid:#243246; --grid-major:#34496A; --lane:#4E6A92;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:calc(env(safe-area-inset-top,0px) + 110px)}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Noto Sans KR",system-ui,-apple-system,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;line-height:1.7;font-size:17px;word-break:keep-all}
+h1,h2,h3,.brand,.hand{font-family:"Jua","Noto Sans KR",sans-serif;font-weight:400}
+button{font:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--brand);outline-offset:2px;border-radius:8px}
+
+/* header */
+.topbar{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--surface);border-bottom:1px solid var(--line)}
+.topbar .in{max-width:1040px;margin:0 auto;padding:10px 18px 0}
+.brand{font-size:22px;display:flex;align-items:center;gap:8px}
+.chips{display:flex;gap:6px;overflow-x:auto;padding:8px 0 10px;scrollbar-width:none}
+.chips::-webkit-scrollbar{display:none}
+.chips a{flex:none;text-decoration:none;color:var(--muted);font-size:14px;font-weight:500;padding:5px 12px;border:1px solid var(--line);border-radius:999px;background:var(--bg)}
+.chips a:hover{color:var(--brand);border-color:var(--brand)}
+.chips a.hl{background:var(--brand);color:var(--brand-ink);border-color:var(--brand)}
+
+main{max-width:1040px;margin:0 auto;padding:18px 18px 40px}
+.crumb{font-size:14px;color:var(--muted);margin:4px 0 14px}
+
+/* hero */
+.hero{position:relative;background:linear-gradient(135deg,var(--brand-soft),var(--net-soft));border-radius:24px;padding:34px 30px;overflow:hidden;margin-bottom:22px}
+.hero h1{font-size:clamp(30px,5vw,44px);margin:0 0 8px;line-height:1.25}
+.hero p{margin:0;max-width:34em;color:var(--muted)}
+.hero .floaters{position:absolute;right:26px;top:50%;transform:translateY(-50%);display:flex;gap:10px;font-size:42px}
+@media (max-width:720px){.hero .floaters{position:static;transform:none;margin-top:16px;font-size:34px}}
+
+/* sections */
+.sec{background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:26px 26px 24px;margin:0 0 18px}
+.eyebrow{display:inline-block;font-size:14px;font-weight:700;color:var(--brand);background:var(--brand-soft);padding:3px 10px;border-radius:999px}
+.sec-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap;margin:10px 0 14px}
+.sec-head h2{margin:0;font-size:clamp(22px,3.4vw,28px);line-height:1.35}
+.page{flex:none;font-size:13px;color:var(--muted);border:1px solid var(--line);border-radius:8px;padding:2px 8px;margin-top:4px}
+p{margin:0 0 10px}
+strong{font-weight:700}
+
+.goal{display:flex;gap:12px;align-items:flex-start;padding:12px 0;border-top:1px dashed var(--line)}
+.goal:first-of-type{border-top:0}
+.num{flex:none;width:30px;height:30px;border-radius:50%;background:var(--brand);color:var(--brand-ink);display:grid;place-items:center;font-weight:700;font-size:15px}
+
+.btn{border:0;border-radius:12px;padding:9px 16px;font-weight:700;background:var(--brand);color:var(--brand-ink)}
+.btn.ghost{background:transparent;color:var(--brand);border:1.5px solid var(--brand)}
+.btn.small{padding:6px 12px;font-size:14px}
+.reveal{display:none;margin-top:12px;padding:14px 16px;border-radius:14px;background:var(--brand-soft);border-left:5px solid var(--brand)}
+.reveal.show{display:block}
+
+.think{display:grid;grid-template-columns:auto 1fr;gap:20px;align-items:center}
+.think .big{font-size:56px;line-height:1}
+@media (max-width:560px){.think{grid-template-columns:1fr}}
+
+.rule-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px}
+@media (max-width:720px){.rule-grid{grid-template-columns:1fr}}
+.rule{border:1px solid var(--line);border-radius:16px;padding:16px 18px;background:var(--bg)}
+.rule h3{margin:0 0 8px;font-size:20px}
+.mini{display:block;width:100%;height:auto;margin:6px 0 10px}
+.rule dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:4px 10px;font-size:16px}
+.rule dt{font-weight:700;color:var(--muted)}
+.rule dd{margin:0}
+
+.tip{background:var(--note);border:1px solid var(--note-line);border-radius:14px;padding:12px 16px;font-size:15px;margin-top:14px}
+
+/* simulation */
+.modes{display:flex;gap:8px;flex-wrap:wrap;margin:4px 0 14px}
+.mode{border:1.5px solid var(--line);background:var(--bg);color:var(--ink);border-radius:12px;padding:9px 16px;font-weight:700}
+.mode[aria-pressed="true"]{background:var(--ink);color:var(--surface);border-color:var(--ink)}
+.board{border:1px solid var(--line);border-radius:18px;background:var(--surface);padding:10px}
+#sim{display:block;width:100%;height:auto;touch-action:none;user-select:none;-webkit-user-select:none}
+.caption{font-size:13px;color:var(--muted);text-align:right;margin:4px 6px 0}
+.panel{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:12px}
+@media (max-width:720px){.panel{grid-template-columns:1fr}}
+.ctl{border-radius:14px;padding:10px 12px;display:flex;align-items:center;justify-content:space-between;gap:8px}
+.ctl .lbl{font-weight:700;font-size:15px}
+.ctl .val{font-size:15px}
+.ctl .step{display:flex;gap:6px}
+.ctl .step button{width:38px;height:38px;border-radius:10px;border:0;font-weight:900;font-size:16px;background:var(--surface);color:var(--ink);box-shadow:inset 0 0 0 1.5px var(--line)}
+.ctl .step button:disabled{opacity:.35;cursor:default}
+.c1{background:var(--f1-soft)} .c1 .lbl{color:var(--f1)}
+.c2{background:var(--f2-soft)} .c2 .lbl{color:var(--f2)}
+.c3{background:var(--net-soft)} .c3 .lbl{color:var(--net)}
+.result{margin-top:12px;border-radius:14px;padding:14px 16px;background:var(--bg);border:1px solid var(--line);min-height:56px}
+.result .formula{font-family:"Jua",sans-serif;font-size:24px;color:var(--net)}
+.result.ok{background:var(--ok-soft);border-color:var(--ok)}
+.result.bad{background:var(--bad-soft);border-color:var(--bad)}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;align-items:center}
+.score{margin-left:auto;font-size:15px;color:var(--muted)}
+.types{display:flex;gap:6px;flex-wrap:wrap;align-items:center;font-size:14px;color:var(--muted)}
+.types button{border:1px solid var(--line);background:var(--surface);color:var(--muted);border-radius:999px;padding:4px 12px;font-size:14px}
+.types button[aria-pressed="true"]{border-color:var(--net);color:var(--net);background:var(--net-soft);font-weight:700}
+.hidden{display:none!important}
+
+.lane-hit{cursor:ew-resize}
+.lane-lock{cursor:default}
+#box{transition:transform .6s cubic-bezier(.3,1.4,.5,1)}
+@media (prefers-reduced-motion:reduce){#box{transition:none}html{scroll-behavior:auto}}
+
+.steps{counter-reset:s;margin:0;padding:0;list-style:none}
+.steps li{display:flex;gap:12px;align-items:flex-start;padding:10px 0;border-top:1px dashed var(--line)}
+.steps li:first-child{border-top:0}
+
+/* quiz */
+.q{padding:16px 0;border-top:1px dashed var(--line)}
+.q:first-of-type{border-top:0;padding-top:4px}
+.q .ask{display:flex;gap:10px;align-items:flex-start;margin-bottom:10px}
+.choices{display:flex;gap:8px;flex-wrap:wrap}
+.choice{border:1.5px solid var(--line);background:var(--bg);color:var(--ink);border-radius:12px;padding:8px 16px;font-weight:700}
+.choice.right{background:var(--ok-soft);border-color:var(--ok);color:var(--ok)}
+.choice.wrong{background:var(--bad-soft);border-color:var(--bad);color:var(--bad)}
+.fb{display:none;margin-top:10px;padding:12px 14px;border-radius:12px;font-size:16px}
+.fb.show{display:block}
+.fb.ok{background:var(--ok-soft)} .fb.no{background:var(--bad-soft)}
+
+.recap{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media (max-width:720px){.recap{grid-template-columns:1fr}}
+.recap .card{border-radius:16px;padding:16px 18px}
+.recap .same{background:var(--f1-soft)} .recap .opp{background:var(--f2-soft)}
+.recap .card h3{margin:0 0 6px;font-size:20px}
+
+.eval{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 0;border-top:1px dashed var(--line)}
+.eval:first-of-type{border-top:0}
+.stars{display:flex;gap:2px;flex:none}
+.stars button{background:none;border:0;font-size:26px;color:var(--line);padding:0 2px;line-height:1}
+.stars button.on{color:#F2B705}
+
+footer{text-align:center;color:var(--muted);font-size:14px;padding:10px 0 30px}
+
+/* ---- 추가 스타일 ---- */
+.brandrow{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.home{flex:none;text-decoration:none;font-size:14px;font-weight:700;color:var(--brand);border:1.5px solid var(--brand);border-radius:999px;padding:4px 12px}
+.home:hover{background:var(--brand);color:var(--brand-ink)}
+
+.fig{margin:0;border:1px solid var(--line);border-radius:16px;background:#FFFFFF;padding:10px;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.fig img{display:block;max-width:100%;height:auto}
+.fig figcaption{font-size:14px;color:#5B6578;margin-top:6px;text-align:center}
+.fig.wide img{max-height:340px}
+.pair{display:grid;grid-template-columns:1.25fr 1fr;gap:12px;margin:12px 0}
+@media (max-width:720px){.pair{grid-template-columns:1fr}}
+
+.case{border:1px solid var(--line);border-radius:18px;padding:18px;margin-top:14px;background:var(--bg)}
+.case h3{margin:0 0 6px;font-size:21px}
+.case.same{border-left:6px solid var(--f1)}
+.case.opp{border-left:6px solid var(--f2)}
+.eq{display:inline-block;font-family:"Jua",sans-serif;font-size:20px;color:var(--net);background:var(--net-soft);border-radius:10px;padding:2px 12px;margin:4px 0}
+
+.def{border-radius:16px;padding:16px 18px;background:var(--net-soft);border-left:6px solid var(--net);margin:6px 0 14px;font-size:18px}
+.conds{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:12px 0}
+@media (max-width:720px){.conds{grid-template-columns:1fr}}
+.cond{border:1px solid var(--line);border-radius:14px;padding:12px 14px;background:var(--surface)}
+.cond b{display:block;font-family:"Jua",sans-serif;font-weight:400;font-size:19px;color:var(--net)}
+
+.judge{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}
+@media (max-width:720px){.judge{grid-template-columns:1fr}}
+.jcard{border:1px solid var(--line);border-radius:16px;padding:12px 14px;background:var(--bg)}
+.jcard svg{display:block;width:100%;height:auto}
+.jcard .tag{font-weight:700;color:var(--muted);font-size:14px}
+.jcard .choices{margin-top:6px}
+
+.blank{font:inherit;font-weight:700;width:8em;max-width:100%;text-align:center;border:0;border-bottom:2.5px solid var(--brand);background:transparent;color:var(--ink);padding:0 4px;margin:0 4px}
+.blank.right{border-color:var(--ok);color:var(--ok)}
+.blank.wrong{border-color:var(--bad);color:var(--bad)}
+
+.bogi{border:1.5px dashed var(--line);border-radius:14px;padding:10px 14px;margin:6px 0 10px;background:var(--bg)}
+.bogi .it{display:flex;gap:10px;align-items:flex-start;padding:4px 0}
+.pick{flex:none;width:34px;height:34px;border-radius:10px;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);font-weight:700}
+.pick[aria-pressed="true"]{background:var(--brand);border-color:var(--brand);color:var(--brand-ink)}
+
+.match{display:grid;grid-template-columns:auto 1fr;gap:8px 12px;align-items:center;margin:6px 0 10px}
+.match select{font:inherit;font-size:16px;padding:7px 10px;border-radius:10px;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);max-width:100%}
+.match select.right{border-color:var(--ok);background:var(--ok-soft)}
+.match select.wrong{border-color:var(--bad);background:var(--bad-soft)}
+
+.recap6{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+@media (max-width:860px){.recap6{grid-template-columns:1fr 1fr}}
+@media (max-width:560px){.recap6{grid-template-columns:1fr}}
+.rc{border:1px solid var(--line);border-radius:16px;padding:14px 16px;background:var(--bg)}
+.rc .ic{font-size:26px;line-height:1}
+.rc b{display:block;font-family:"Jua",sans-serif;font-weight:400;font-size:19px;margin:6px 0 2px}
+
+.video{display:flex;gap:18px;align-items:center;flex-wrap:wrap;background:linear-gradient(135deg,var(--f2-soft),var(--brand-soft));border-radius:18px;padding:20px}
+.video .play{flex:none;width:64px;height:64px;border-radius:50%;background:var(--f2);color:#fff;display:grid;place-items:center;font-size:26px}
+.video .txt{flex:1;min-width:200px}
+.video a.btn{text-decoration:none;display:inline-block}
+
+/* ---- 중력 차시 추가 ---- */
+.think{grid-template-columns:minmax(0,1.1fr) 1fr}
+.think .fig img{max-height:300px}
+@media (max-width:720px){.think{grid-template-columns:1fr}}
+
+.gstage{position:relative;max-width:760px;margin:10px auto 0;background:#fff;border:1px solid var(--line);border-radius:18px;overflow:hidden}
+.gstage img{display:block;width:100%;height:auto}
+.gstage svg{position:absolute;inset:0;width:100%;height:100%;touch-action:none;user-select:none;-webkit-user-select:none}
+.gctl{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:12px}
+@media (max-width:720px){.gctl{grid-template-columns:1fr}}
+.gctl .ctl{background:var(--bg);border:1.5px solid var(--line);cursor:pointer}
+.gctl .ctl.sel{border-color:var(--f1);background:var(--f1-soft)}
+.gctl .ctl.ok{border-color:var(--ok);background:var(--ok-soft)}
+.gctl .ctl.no{border-color:var(--bad);background:var(--bad-soft)}
+.gctl .ctl .lbl{color:var(--ink)}
+
+.ex{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:12px}
+@media (max-width:900px){.ex{grid-template-columns:1fr 1fr}}
+@media (max-width:520px){.ex{grid-template-columns:1fr}}
+.excard{border:1px solid var(--line);border-radius:16px;background:var(--bg);padding:10px;display:flex;flex-direction:column}
+.excard .fig{height:190px;padding:6px}
+.excard .fig img{max-height:176px;width:auto}
+.excard h3{margin:10px 2px 6px;font-size:19px}
+.excard .reveal{font-size:15px}
+
+.vs{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:12px}
+@media (max-width:720px){.vs{grid-template-columns:1fr}}
+.vcol{border-radius:18px;padding:14px;border:1px solid var(--line)}
+.vcol.earth{background:var(--f2-soft)}
+.vcol.moon{background:var(--note)}
+.vcol h3{margin:0 0 8px;font-size:21px}
+.vcol .pics{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.vcol .fig{height:170px;padding:6px}
+.vcol .fig img{max-height:156px;width:auto}
+
+.wm{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:12px}
+@media (max-width:720px){.wm{grid-template-columns:1fr}}
+.wm .card{border-radius:16px;padding:16px 18px;border:1px solid var(--line);background:var(--bg)}
+.wm .card h3{margin:0 0 8px;font-size:22px}
+.wm .card.w{border-top:6px solid var(--f1)}
+.wm .card.m{border-top:6px solid var(--f2)}
+.wm dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:6px 12px}
+.wm dt{font-weight:700;color:var(--muted)}
+.wm dd{margin:0}
+
+.calc{border:1px solid var(--line);border-radius:18px;padding:18px;margin-top:16px;background:var(--bg)}
+.calc label{font-weight:700}
+.calc input[type=range]{width:100%;accent-color:var(--brand);margin:8px 0 4px}
+.calc .mval{font-family:"Jua",sans-serif;font-size:26px;color:var(--brand)}
+.readout{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:10px}
+@media (max-width:720px){.readout{grid-template-columns:1fr}}
+.readout>div{border-radius:14px;padding:12px 14px;background:var(--surface);border:1px solid var(--line)}
+.readout small{display:block;color:var(--muted);font-size:14px}
+.readout b{font-family:"Jua",sans-serif;font-weight:400;font-size:26px}
+.readout .e b{color:var(--f2)} .readout .mo b{color:#B8860B} .readout .ms b{color:var(--ok)}
+.bar{height:12px;border-radius:99px;background:var(--line);margin-top:8px;overflow:hidden}
+.bar i{display:block;height:100%;border-radius:99px;transition:width .3s}
+
+/* ---- 마찰력 차시 추가 ---- */
+.linkcard{display:flex;gap:14px;align-items:center;flex-wrap:wrap;border-radius:16px;padding:14px 16px;margin-top:14px;background:linear-gradient(135deg,var(--f2-soft),var(--brand-soft))}
+.linkcard .ic{flex:none;width:52px;height:52px;border-radius:50%;display:grid;place-items:center;font-size:22px;color:#fff;background:var(--f2)}
+.linkcard.lab .ic{background:var(--brand)}
+.linkcard .txt{flex:1;min-width:200px}
+.linkcard .txt b{display:block;font-family:"Jua",sans-serif;font-weight:400;font-size:19px}
+.linkcard a.btn{text-decoration:none}
+
+.proc{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:16px;align-items:center;margin:12px 0}
+@media (max-width:760px){.proc{grid-template-columns:1fr}}
+
+.istage{background:#fff;border:1px solid var(--line);border-radius:18px;overflow:hidden;margin-top:12px}
+.istage svg{display:block;width:100%;height:auto}
+.ictl{display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:center;margin-top:12px}
+@media (max-width:640px){.ictl{grid-template-columns:1fr}}
+.seg{display:flex;gap:6px;flex-wrap:wrap}
+.seg button{font:inherit;font-weight:700;font-size:15px;padding:8px 14px;border-radius:999px;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--brand);border-color:var(--brand);color:var(--brand-ink)}
+.ictl input[type=range]{width:100%;accent-color:var(--brand)}
+.rtable{width:100%;border-collapse:collapse;margin-top:12px;font-size:16px}
+.rtable th,.rtable td{border:1px solid var(--line);padding:9px 10px;text-align:center}
+.rtable th{background:var(--bg);font-weight:700}
+.rtable td.big{font-family:"Jua",sans-serif;font-size:22px;color:var(--brand)}
+
+.cmp{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:16px;align-items:center;margin-top:12px}
+@media (max-width:760px){.cmp{grid-template-columns:1fr}}
+.cmpstage{background:#fff;border:1px solid var(--line);border-radius:18px;overflow:hidden}
+.cmpstage svg{display:block;width:100%;height:auto}
+.cmp .opt{display:flex;flex-direction:column;gap:10px}
+.cmp .opt .lbl{font-weight:700;font-size:15px;color:var(--muted)}
+.meter{border-radius:14px;padding:12px 14px;background:var(--bg);border:1px solid var(--line)}
+.meter b{font-family:"Jua",sans-serif;font-weight:400;font-size:24px;color:var(--f1)}
+
+.figcap3{display:grid;grid-template-columns:1fr 1fr 1fr;text-align:center;font-size:14px;color:var(--muted);margin-top:4px}
+.ex3{grid-template-columns:repeat(3,1fr)}
+@media (max-width:760px){.ex3{grid-template-columns:1fr}}
+.tag2{display:inline-block;font-size:13px;font-weight:700;border-radius:999px;padding:2px 10px;margin-bottom:4px}
+.tag2.up{background:var(--f1-soft);color:var(--f1)}
+.tag2.down{background:var(--f2-soft);color:var(--f2)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}
+@media (max-width:640px){.two{grid-template-columns:1fr}}
+.two .card{border-radius:16px;padding:14px 16px;border:1px solid var(--line);background:var(--bg)}
+.two .card h3{margin:0 0 6px;font-size:19px}
+.two ul{margin:0;padding-left:20px}
+.two li{margin:3px 0}
+.legend{display:flex;gap:16px;flex-wrap:wrap;font-size:14px;margin-top:8px;color:var(--muted)}
+.legend span::before{content:"";display:inline-block;width:22px;height:5px;border-radius:3px;margin-right:6px;vertical-align:middle;background:var(--c)}
+
+
+/* ---- 힘과 운동 차시 추가 ---- */
+.legend{display:flex;gap:16px;flex-wrap:wrap;font-size:14px;margin-top:8px;color:var(--muted)}
+.legend span::before{content:"";display:inline-block;width:22px;height:5px;border-radius:3px;margin-right:6px;vertical-align:middle;background:var(--c)}
+.fig figcaption{font-size:14px;color:var(--muted);margin-top:6px;text-align:center}
+.review{display:grid;gap:10px}
+.review .rv{display:flex;gap:12px;align-items:flex-start;border:1px solid var(--line);border-radius:14px;padding:12px 14px;background:var(--bg)}
+.review .rv .num{flex:none}
+.story{border-radius:16px;padding:16px 18px;background:var(--note);border:1px solid var(--note-line);font-size:17px;line-height:1.8;margin:12px 0}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:12px 0}
+@media (max-width:640px){.grid2{grid-template-columns:1fr}}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:12px}
+@media (max-width:820px){.grid3{grid-template-columns:1fr}}
+.mcard{border:1px solid var(--line);border-radius:16px;padding:12px;background:var(--bg);display:flex;flex-direction:column;gap:8px}
+.mcard h3{margin:0;font-size:18px;text-align:center;background:var(--brand-soft);color:var(--brand);border-radius:10px;padding:6px 8px;font-family:"Jua",sans-serif;font-weight:400}
+.mcard .fig{padding:6px}
+.mcard .fig img{max-height:170px}
+.mcard p{margin:0;font-size:16px}
+.mcard .blank{width:6.5em}
+.sim-stage{background:#fff;border:1px solid var(--line);border-radius:18px;overflow:hidden;margin-top:12px}
+.sim-stage svg{display:block;width:100%;height:auto}
+.windbtns{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:12px}
+@media (max-width:720px){.windbtns{grid-template-columns:1fr 1fr}}
+.windbtns button{font:inherit;font-weight:700;font-size:15px;padding:10px 8px;border-radius:14px;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer;line-height:1.35}
+.windbtns button small{display:block;font-weight:500;color:var(--muted);font-size:13px}
+.windbtns button[aria-pressed="true"]{border-color:var(--brand);background:var(--brand-soft)}
+.obs{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:10px}
+.obs>div{border-radius:14px;padding:12px 14px;background:var(--bg);border:1px solid var(--line)}
+.obs small{display:block;color:var(--muted);font-size:14px}
+.obs b{font-family:"Jua",sans-serif;font-weight:400;font-size:22px}
+.otable{width:100%;border-collapse:collapse;margin-top:12px;font-size:15px}
+.otable th,.otable td{border:1px solid var(--line);padding:8px 10px;text-align:center}
+.otable th{background:var(--bg)}
+.otable td.done{color:var(--brand);font-weight:700}
+.sort{display:grid;gap:8px;margin-top:10px}
+.sort .row{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;border:1px solid var(--line);border-radius:12px;padding:8px 12px;background:var(--bg)}
+.sort select{font:inherit;font-size:15px;padding:6px 10px;border-radius:10px;border:1.5px solid var(--line);background:var(--surface);color:var(--ink)}
+.sort select.right{border-color:var(--ok);background:var(--ok-soft)}
+.sort select.wrong{border-color:var(--bad);background:var(--bad-soft)}
+@media (max-width:560px){.sort .row{grid-template-columns:1fr}}
+.next{display:flex;gap:12px;align-items:flex-start;border:1.5px dashed var(--brand);border-radius:16px;padding:14px 16px;background:var(--brand-soft)}
+.next .ic{font-size:26px;line-height:1}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="in">
+    <div class="brandrow">
+      <div class="brand">💪 힘의 작용 연구소</div>
+      <a class="home" href="https://2026-1y-sub.vercel.app/">🏠 목록으로</a>
+    </div>
+    <nav class="chips" aria-label="학습 순서">
+      <a href="#review">복습하기</a>
+      <a href="#goal">학습 목표</a>
+      <a href="#open">생각해 보기</a>
+      <a href="#think">생각 깨우기</a>
+      <a href="#lab" class="hl">해보기 ｜ 힘과 운동의 관계</a>
+      <a href="#concept1">힘이 작용할 때 물체의 운동</a>
+      <a href="#concept2">일상생활 속 운동</a>
+      <a href="#sort">운동 분류하기</a>
+      <a href="#more">개념 확인 문제</a>
+      <a href="#recap">배운 내용 정리</a>
+      <a href="#eval">평가 길잡이</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <div class="crumb">5. 힘의 작용 › 2. 힘과 물체의 운동 › 1. 힘이 작용할 때 물체의 운동</div>
+
+  <section class="hero">
+    <h1>하늘 높이 날아오르자!</h1>
+    <p>빗면을 빠르게 내려온 스키 점프 선수가 하늘로 날아올랐다가 곡선을 그리며 착지해요. 물체에 힘이 작용하면 물체의 운동은 어떻게 달라질까요?</p>
+    <div class="floaters" aria-hidden="true"><span>⛷️</span><span>⚽</span><span>🎡</span></div>
+  </section>
+
+  <!-- 복습하기 -->
+  <section class="sec" id="review">
+    <span class="eyebrow">↩ 복습하기</span>
+    <div class="sec-head"><h2>지난 시간에 배운 용어를 확인해 보자</h2><span class="page">교과서 176쪽</span></div>
+    <div class="review">
+      <div class="rv"><span class="num">1</span><div><strong>알짜힘</strong> : 한 물체에 여러 힘이 동시에 작용할 때 이 힘들과 같은 효과를 나타내는 하나의 힘</div></div>
+      <div class="rv"><span class="num">2</span><div><strong>운동 상태</strong> : 물체의 운동 방향과 빠르기(<strong>속력</strong>)</div></div>
+      <div class="rv q" style="border-top:1px solid var(--line);padding:12px 14px;margin:0"><span class="num">3</span><div><strong>힘의 평형</strong> : 물체에 작용하는 알짜힘이 <input class="blank" data-ans="0|영" aria-label="힘의 평형 빈칸" style="width:4em">인 상태
+        <div style="margin-top:6px"><button class="btn small" data-blank>정답 확인</button></div><div class="fb"></div></div></div>
+    </div>
+  </section>
+
+  <!-- 학습 목표 -->
+  <section class="sec" id="goal">
+    <span class="eyebrow">🎯 이 단원을 배우면</span>
+    <div class="sec-head"><h2>학습 목표</h2><span class="page">교과서 178쪽</span></div>
+    <div class="goal"><span class="num">1</span><div><strong>알짜힘이 0이 아닐 때</strong> 물체의 운동 상태가 변함을 설명할 수 있다.</div></div>
+    <div class="goal"><span class="num">2</span><div>물체에 힘이 작용할 때 <strong>물체의 운동을 분류</strong>할 수 있다.</div></div>
+  </section>
+
+  <!-- 단원 열기 -->
+  <section class="sec" id="open">
+    <span class="eyebrow">💭 생각해 보기</span>
+    <div class="sec-head"><h2>스키 점프 선수의 운동 상태는 왜 변할까?</h2><span class="page">교과서 176~177쪽</span></div>
+    <figure class="fig"><img src="images/ski-jump-sky.jpg" alt="파란 하늘 높이 날아오른 스키 점프 선수"></figure>
+    <div class="story">스키 점프 선수가 몸을 최대한 웅크린 채 경사면을 빠른 속력으로 내려오고 있어. 도약대에 다다른 선수는 무릎과 몸을 동시에 쭉 펴면서 점프를 하더니 운동 방향이 바뀌며 하늘 높이 날아오르는 거야. 선수는 아름다운 곡선을 그리며 한참을 날아서 바닥에 안전하게 착지했어.</div>
+    <div class="q" style="border-top:0;padding-top:0">
+      <div class="ask"><span class="num">🤔</span><div><strong>스키 점프를 하는 동안 선수의 운동 상태는 왜 변한 것일까?</strong><br>스키 점프를 하는 동안 선수의 <input class="blank" data-ans="운동상태|운동상태(속력과방향)|속력과방향|속력과운동방향" aria-label="빈칸 1">은/는 계속 변한다. 이것은 경사면과 도약대의 모양에 의한 영향도 받지만, 가장 큰 원인은 선수가 <input class="blank" data-ans="중력" aria-label="빈칸 2" style="width:5em">의 영향을 받기 때문이다.</div></div>
+      <button class="btn small" data-blank>정답 확인</button>
+      <div class="fb"></div>
+    </div>
+  </section>
+
+  <!-- 생각 깨우기 -->
+  <section class="sec" id="think">
+    <span class="eyebrow">💭 생각 깨우기</span>
+    <div class="sec-head"><h2>운동장을 굴러가던 축구공이 멈추는 까닭은?</h2><span class="page">교과서 178쪽</span></div>
+    <div class="think">
+      <figure class="fig"><img src="images/soccer-stop.jpg" alt="운동장에서 굴러가던 축구공이 점점 느려지다가 멈추는 모습"></figure>
+      <div>
+        <p>친구가 찬 축구공이 운동장을 굴러가다가 점점 느려지더니 멈췄다. 운동장을 굴러가던 축구공이 멈추는 까닭은 무엇일까?</p>
+        <button class="btn small" data-reveal="r-think">💡 생각 확인하기</button>
+        <div class="reveal" id="r-think">축구공과 지면 사이에 작용하는 <strong>마찰력</strong>에 의해 공의 속력이 점점 느려지기 때문이다.</div>
+      </div>
+    </div>
+    <p style="margin-top:12px">운동장에서 공을 차면 공의 운동 방향과 반대 방향으로 마찰력이 작용하여 공의 속력이 변하다가 멈춘다. 공에 작용한 힘과 공의 운동은 어떤 관계가 있을까? 물체에 작용하는 알짜힘과 물체의 운동 사이의 관계를 알아보자.</p>
+  </section>
+
+  <!-- 해보기 -->
+  <section class="sec" id="lab">
+    <span class="eyebrow">🔬 해 보기</span>
+    <div class="sec-head"><h2>힘과 운동의 관계 알아보기</h2><span class="page">교과서 178쪽</span></div>
+    <p>🎯 물체에 작용하는 알짜힘과 물체의 운동 사이의 관계를 설명할 수 있다.</p>
+    <p style="font-size:15px;color:var(--muted)">🧰 준비물: 탁구공, 홈통, 받침대, 휴대용 선풍기, 종이테이프</p>
+    <div class="tip">📎 <strong>운동 상태</strong>는 물체의 <strong>속력(빠르기)</strong>과 <strong>운동 방향</strong>을 모두 고려하여 나타낸 것이에요.</div>
+
+    <ol class="steps" style="margin-top:14px">
+      <li><span class="num">1</span><div>책상 위에 놓은 홈통에 탁구공을 놓고 손으로 밀어서 보낸다.</div></li>
+      <li><span class="num">2</span><div>홈통과 <strong>나란한 방향</strong>으로 바람을 보내 공의 운동 상태를 관찰해 보자.</div></li>
+    </ol>
+    <div class="grid3" style="grid-template-columns:1.3fr 1fr 1fr">
+      <figure class="fig"><img src="images/trough-ball.jpg" alt="홈통 위의 탁구공을 손으로 밀어 보내는 모습"><figcaption>홈통 위의 탁구공 밀어 보내기</figcaption></figure>
+      <figure class="fig"><img src="images/fan-same.jpg" alt="탁구공 뒤에서 운동 방향과 같은 방향으로 선풍기 바람을 보내는 모습"><figcaption>운동 방향과 같은 방향으로 바람을 보낼 때</figcaption></figure>
+      <figure class="fig"><img src="images/fan-opposite.jpg" alt="탁구공 앞에서 운동 방향과 반대 방향으로 선풍기 바람을 보내는 모습"><figcaption>운동 방향과 반대 방향으로 바람을 보낼 때</figcaption></figure>
+    </div>
+    <ol class="steps" start="3" style="margin-top:14px">
+      <li><span class="num">3</span><div>홈통 끝을 받침대에 올려 빗면을 만든다.</div></li>
+      <li><span class="num">4</span><div>빗면에 탁구공을 놓아 굴린 후 공의 운동 방향과 <strong>나란하지 않은 방향(수직, 비스듬히)</strong>으로 바람을 보내 공의 운동 상태를 관찰해 보자.</div></li>
+    </ol>
+    <figure class="fig" style="margin-top:10px"><img src="images/trough-slope.jpg" alt="받침대에 올린 홈통 빗면에서 탁구공을 굴리고 종이테이프를 따라 움직임을 살펴보는 모습"><figcaption>홈통과 나란하게 붙인 종이테이프를 따라 움직이는 탁구공의 움직임을 살펴본다.</figcaption></figure>
+
+    <h3 style="margin:24px 0 4px;font-size:20px">🌬️ 가상 실험: 굴러가는 탁구공에 바람을 보내 보자</h3>
+    <p style="font-size:15px;color:var(--muted);margin:0">바람의 방향을 고르고 「공 굴리기」를 눌러 보자. 일정한 시간 간격으로 찍힌 공의 위치(흐린 공)를 보면 속력과 운동 방향의 변화를 알 수 있어요. 점 사이 간격이 넓어지면 빨라진 거예요!</p>
+    <div class="windbtns" id="wind" role="group" aria-label="바람의 방향">
+      <button data-c="same" aria-pressed="true">➡️ 같은 방향<small>운동 방향과 나란하게</small></button>
+      <button data-c="opp" aria-pressed="false">⬅️ 반대 방향<small>운동 방향과 나란하게</small></button>
+      <button data-c="perp" aria-pressed="false">⬇️ 수직 방향<small>운동 방향과 나란하지 않게</small></button>
+      <button data-c="obl" aria-pressed="false">↘️ 비스듬한 방향<small>운동 방향과 나란하지 않게</small></button>
+    </div>
+    <div class="sim-stage"><svg id="msvg" viewBox="0 0 680 330" aria-label="굴러가는 탁구공에 바람을 보내는 가상 실험"></svg></div>
+    <div class="legend"><span style="--c:#E0413A">힘(바람)</span><span style="--c:#1E9E62">운동 방향</span></div>
+    <div class="actions"><button class="btn" id="roll">▶ 공 굴리기</button></div>
+    <div class="obs">
+      <div><small>속력</small><b id="o-speed">—</b></div>
+      <div><small>운동 방향</small><b id="o-dir">—</b></div>
+    </div>
+    <table class="otable" aria-label="관찰 기록">
+      <tr><th>바람의 방향</th><th>같은 방향</th><th>반대 방향</th><th>수직 방향</th><th>비스듬한 방향</th></tr>
+      <tr><th>관찰 결과</th><td id="t-same">?</td><td id="t-opp">?</td><td id="t-perp">?</td><td id="t-obl">?</td></tr>
+    </table>
+    <div class="result" id="m-result" aria-live="polite" style="margin-top:12px"><span style="color:var(--muted)">네 가지 방향으로 모두 바람을 보내 관찰해 보자.</span></div>
+
+    <h3 style="margin:22px 0 6px;font-size:20px">📝 질문</h3>
+    <div class="q" style="border-top:0;padding-top:0">
+      <div class="ask"><span class="num">?</span><div>공과 나란한 방향으로 바람을 보낼 때와 나란하지 않은 방향으로 바람을 보낼 때 공의 운동 상태는 어떻게 변하는가?<br><br>
+        ▶ 공과 나란한 방향으로 바람을 보낼 때는 탁구공의 운동 방향은 <input class="blank" data-ans="변하지않고|변하지않는다|안변하고" aria-label="빈칸 1">, 속력이 <input class="blank" data-ans="빨라지거나느려진다|빨라지거나느려지고|빨라지거나느려짐" aria-label="빈칸 2" style="width:10em">.
+        탁구공의 운동 방향과 같은 방향으로 바람을 보내면 탁구공의 속력이 <input class="blank" data-ans="빨라지고|빨라진다|빨라짐|증가하고|증가한다" aria-label="빈칸 3">, 반대 방향으로 바람을 보내면 탁구공의 속력이 <input class="blank" data-ans="느려진다|느려지고|느려짐|감소한다|감소하고" aria-label="빈칸 4">.
+        탁구공의 운동 방향과 나란하지 않은 방향으로 바람을 보내면 탁구공의 <input class="blank" data-ans="속력|빠르기" aria-label="빈칸 5" style="width:5em">과 <input class="blank" data-ans="운동방향|방향|운동" aria-label="빈칸 6" style="width:6em">이 변한다.</div></div>
+      <button class="btn small" data-blank>정답 확인</button>
+      <button class="btn small ghost" data-reveal="r-lab">예시 답안 보기</button>
+      <div class="fb"></div>
+      <div class="reveal" id="r-lab">과정 2에서 탁구공의 운동 방향은 변하지 않고, 속력이 빨라지거나 느려진다. 탁구공의 운동 방향과 같은 방향으로 바람을 보내면 탁구공의 속력이 빨라지고, 반대 방향으로 바람을 보내면 탁구공의 속력이 느려진다. 과정 4에서 탁구공의 운동 방향과 나란하지 않은 방향으로 바람을 보내면 탁구공의 속력과 운동 방향이 변한다.</div>
+    </div>
+  </section>
+
+  <!-- 개념 1 -->
+  <section class="sec" id="concept1">
+    <span class="eyebrow">📘 교과서 개념</span>
+    <div class="sec-head"><h2>1. 힘이 작용할 때 물체의 운동</h2><span class="page">교과서 179쪽</span></div>
+    <p>탁구공의 운동 방향과 나란한 방향으로 바람을 보내면 탁구공의 속력이 변한다. 하지만 탁구공의 운동 방향과 수직 방향으로 바람을 보내면 탁구공의 운동 방향이 변하고, 탁구공의 운동 방향과 비스듬한 방향으로 바람을 보내면 탁구공의 속력과 운동 방향이 모두 변한다.</p>
+    <p style="font-size:15px;color:var(--muted);margin-bottom:0">빈칸을 채운 뒤 「정답 확인」을 눌러 보자.</p>
+    <div class="q" style="border-top:0">
+      <div class="grid3">
+        <div class="mcard"><h3>운동 방향과 나란한 방향으로<br>힘이 작용할 때</h3>
+          <figure class="fig"><img src="images/v16-parallel.jpg" alt="같은 방향의 힘을 받아 점점 간격이 넓어지며 직선으로 움직이는 공"></figure>
+          <p>➡ 물체의 <input class="blank" data-ans="속력|빠르기" aria-label="나란한 방향 빈칸">이/가 변한다.</p></div>
+        <div class="mcard"><h3>운동 방향과 수직 방향으로<br>힘이 작용할 때</h3>
+          <figure class="fig"><img src="images/v16-perpendicular.jpg" alt="수직 방향의 힘을 받아 운동 방향이 아래로 꺾이는 공"></figure>
+          <p>➡ 물체의 <input class="blank" data-ans="운동방향|방향" aria-label="수직 방향 빈칸">이/가 변한다.</p></div>
+        <div class="mcard"><h3>운동 방향과 비스듬한 방향으로<br>힘이 작용할 때</h3>
+          <figure class="fig"><img src="images/v16-oblique.jpg" alt="비스듬한 방향의 힘을 받아 간격이 넓어지며 방향이 꺾이는 공"></figure>
+          <p>➡ 물체의 <strong>속력과 운동 방향이 모두</strong> 변한다.</p></div>
+      </div>
+      <p style="text-align:center;font-size:15px;color:var(--muted);margin:8px 0">그림 Ⅴ-16 힘이 작용한 물체의 운동</p>
+      <button class="btn small" data-blank>정답 확인</button>
+      <div class="fb"></div>
+    </div>
+    <div class="two">
+      <div class="card"><h3>➡️ 운동 방향과 같은 방향의 힘</h3><p style="margin:0">물체의 속력이 <strong>증가</strong>한다.<br><span style="color:var(--muted);font-size:15px">예) 빗면에서 굴러 내리는 공, 다이빙하는 사람 등</span></p></div>
+      <div class="card"><h3>⬅️ 운동 방향과 반대 방향의 힘</h3><p style="margin:0">물체의 속력이 <strong>감소</strong>한다.<br><span style="color:var(--muted);font-size:15px">예) 브레이크를 밟은 자동차, 위로 던져 올라가는 공 등</span></p></div>
+    </div>
+    <div class="q">
+      <div class="ask"><span class="num">!</span><div>이와 같이 물체에 작용하는 <input class="blank" data-ans="알짜힘" aria-label="알짜힘 빈칸">이 0이 아니면 물체의 운동 상태(속력이나 운동 방향)가 변한다.</div></div>
+      <button class="btn small" data-blank>정답 확인</button>
+      <div class="fb"></div>
+    </div>
+    <div class="tip">➕ <strong>보충 | 힘의 크기에 따른 속력 변화</strong> — 직선상에서 운동하는 물체에 작용하는 알짜힘이 클수록 물체의 속력이 더 빨리 증가하거나 감소한다. 이때 물체에 작용하는 알짜힘의 크기가 2배, 3배, …가 되면 속력의 변화도 2배, 3배, …가 된다. 즉, <strong>속력 변화는 물체에 작용하는 알짜힘의 크기에 비례</strong>한다.</div>
+  </section>
+
+  <!-- 개념 2 -->
+  <section class="sec" id="concept2">
+    <span class="eyebrow">🔎 생활 속 과학</span>
+    <div class="sec-head"><h2>2. 일상생활에서 힘이 작용할 때 물체의 운동</h2><span class="page">교과서 179쪽</span></div>
+    <p style="font-size:15px;color:var(--muted);margin-bottom:0">사진 속 물체에 힘이 어느 방향으로 작용하는지 생각하며 빈칸을 채워 보자.</p>
+    <div class="q" style="border-top:0">
+      <div class="grid3">
+        <div class="mcard"><h3>스키 점프 선수</h3>
+          <figure class="fig"><img src="images/ski-jumper.jpg" alt="빗면을 내려오는 스키 점프 선수"></figure>
+          <p>선수가 빗면을 내려올 때 선수의 운동 방향과 <input class="blank" data-ans="나란한|같은" aria-label="스키 점프 빈칸"> 방향으로 힘이 작용해 <strong>속력</strong>이 변하는 운동을 한다.</p></div>
+        <div class="mcard"><h3>대관람차</h3>
+          <figure class="fig"><img src="images/ferris-wheel.jpg" alt="빙글빙글 도는 대관람차"></figure>
+          <p>관람차의 운동 방향과 <input class="blank" data-ans="수직" aria-label="대관람차 빈칸"> 방향으로 힘이 작용해 <strong>운동 방향</strong>이 변하는 운동을 한다.</p></div>
+        <div class="mcard"><h3>농구 선수가 비스듬히 던진 공</h3>
+          <figure class="fig"><img src="images/basketball-throw.jpg" alt="휠체어 농구 선수가 비스듬히 던진 공이 곡선을 그리며 날아가는 모습"></figure>
+          <p>공의 운동 방향과 <input class="blank" data-ans="비스듬한|비스듬" aria-label="농구공 빈칸"> 방향으로 힘이 작용해 <strong>속력과 운동 방향이 모두</strong> 변하는 운동을 한다.</p></div>
+      </div>
+      <p style="text-align:center;font-size:15px;color:var(--muted);margin:8px 0">그림 Ⅴ-17 일상생활에서 힘이 작용할 때 물체의 운동</p>
+      <button class="btn small" data-blank>정답 확인</button>
+      <div class="fb"></div>
+    </div>
+  </section>
+
+  <!-- 분류하기 -->
+  <section class="sec" id="sort">
+    <span class="eyebrow">🧩 분류해 보기</span>
+    <div class="sec-head"><h2>물체의 운동을 분류해 보자</h2><span class="page">학습 목표 2</span></div>
+    <p>다음 물체의 운동을 <strong>속력이 변하는 운동</strong>, <strong>운동 방향이 변하는 운동</strong>, <strong>속력과 운동 방향이 모두 변하는 운동</strong>으로 분류해 보자.</p>
+    <div class="sort" id="sortlist"></div>
+    <div class="actions"><button class="btn small" id="sort-check">정답 확인</button></div>
+    <div class="result" id="sort-result" aria-live="polite"></div>
+    <div class="next" style="margin-top:14px"><span class="ic">🔭</span><div><strong>다음 시간에는?</strong><br>탐구 <strong>‘여러 가지 물체의 운동 조사하기’</strong>(교과서 180~181쪽)에서 학교, 놀이공원, 운동 경기장 등에서 직접 운동 사례를 찾아 분류하고 포스터로 발표해 볼 거예요. 오늘 분류한 방법을 기억해 두자!</div></div>
+  </section>
+
+  <!-- 개념 확인 문제 -->
+  <section class="sec" id="more">
+    <span class="eyebrow">✏️ 개념 확인 문제</span>
+    <div class="sec-head"><h2>조금 더 풀어볼까요?</h2><span class="page">힘과 운동 연습 문제</span></div>
+
+    <div class="q">
+      <div class="ask"><span class="num">1</span><div>문장이 옳으면 O, 옳지 않으면 X를 선택해 보자.<br><strong>물체에 작용하는 알짜힘이 0이 아니면 물체의 운동 상태가 변한다.</strong></div></div>
+      <div class="choices" data-answer="O"><button class="choice">O</button><button class="choice">X</button></div>
+      <div class="fb" data-wrong="알짜힘이 0인 상태는 무엇이었는지, 0이 아니면 어떻게 되는지 떠올려 보자.">정답은 <strong>O</strong>! 알짜힘이 0이 아니면 속력이나 운동 방향, 또는 둘 다 변해요.</div>
+    </div>
+
+    <div class="q">
+      <div class="ask"><span class="num">2</span><div>달리던 자동차가 브레이크를 밟아 속력이 줄어들었다. 자동차에 작용한 알짜힘의 방향은?</div></div>
+      <div class="choices" data-answer="운동 방향과 반대 방향">
+        <button class="choice">운동 방향과 같은 방향</button><button class="choice">운동 방향과 반대 방향</button><button class="choice">운동 방향과 수직 방향</button>
+      </div>
+      <div class="fb" data-wrong="속력이 감소하는 경우를 다시 확인해 보자.">정답은 <strong>운동 방향과 반대 방향</strong>! 반대 방향으로 힘이 작용하면 속력이 감소해요.</div>
+    </div>
+
+    <div class="q">
+      <div class="ask"><span class="num">3</span><div>굴러가는 공에 운동 방향과 <strong>수직</strong> 방향으로 힘이 작용할 때 나타나는 변화는?</div></div>
+      <div class="choices" data-answer="운동 방향만 변한다">
+        <button class="choice">속력만 변한다</button><button class="choice">운동 방향만 변한다</button><button class="choice">속력과 운동 방향이 모두 변한다</button>
+      </div>
+      <div class="fb" data-wrong="가상 실험에서 ⬇️ 수직 방향 바람을 보냈을 때를 떠올려 보자.">정답은 <strong>운동 방향만 변한다</strong>! 대관람차가 이런 운동을 해요.</div>
+    </div>
+
+    <div class="q">
+      <div class="ask"><span class="num">4</span><div>속력과 운동 방향이 <strong>모두</strong> 변하는 운동을 &lt;보기&gt;에서 모두 고르시오.</div></div>
+      <div class="bogi" data-answer="ㄴ,ㄹ">
+        <div class="it"><button class="pick" aria-pressed="false" data-k="ㄱ">ㄱ</button><div>연직 아래로 떨어지는 다이빙 선수</div></div>
+        <div class="it"><button class="pick" aria-pressed="false" data-k="ㄴ">ㄴ</button><div>앞뒤로 흔들리는 그네</div></div>
+        <div class="it"><button class="pick" aria-pressed="false" data-k="ㄷ">ㄷ</button><div>일정하게 돌아가는 회전목마</div></div>
+        <div class="it"><button class="pick" aria-pressed="false" data-k="ㄹ">ㄹ</button><div>오르락내리락 달리는 롤러코스터</div></div>
+      </div>
+      <button class="btn small" data-bogi-check>정답 확인</button>
+      <div class="fb" data-ok="<strong>답 ㄴ, ㄹ</strong> — 그네와 롤러코스터는 속력과 운동 방향이 모두 변해요. ㄱ 다이빙 선수는 속력만, ㄷ 회전목마는 운동 방향만 변해요." data-no="아쉬워요! 빨라지거나 느려지면서 <strong>동시에</strong> 방향도 바뀌는 운동을 찾아보자."></div>
+    </div>
+  </section>
+
+  <!-- 정리 -->
+  <section class="sec" id="recap">
+    <span class="eyebrow">🧠 배운 내용 정리하기</span>
+    <div class="sec-head"><h2>이 단원에서 배운 내용을 정리해 보자.</h2><span class="page">교과서 176~179쪽</span></div>
+    <div class="recap6">
+      <div class="rc"><span class="ic">🧭</span><b>운동 상태</b>물체의 속력(빠르기)과 운동 방향</div>
+      <div class="rc"><span class="ic">⚡</span><b>알짜힘 ≠ 0</b>물체의 운동 상태(속력이나 운동 방향)가 변한다.</div>
+      <div class="rc" style="border-left:5px solid var(--f1)"><span class="ic">➡️</span><b>나란한 방향의 힘</b>속력이 변한다. (같은 방향 → 증가, 반대 방향 → 감소) 예) 스키 점프 선수</div>
+      <div class="rc" style="border-left:5px solid var(--f2)"><span class="ic">⬇️</span><b>수직 방향의 힘</b>운동 방향이 변한다. 예) 대관람차</div>
+      <div class="rc" style="border-left:5px solid var(--net)"><span class="ic">↘️</span><b>비스듬한 방향의 힘</b>속력과 운동 방향이 모두 변한다. 예) 비스듬히 던진 공</div>
+      <div class="rc"><span class="ic">📈</span><b>힘의 크기와 속력 변화</b>속력 변화는 알짜힘의 크기에 비례한다.</div>
+    </div>
+  </section>
+
+  <!-- 평가 길잡이 -->
+  <section class="sec" id="eval">
+    <span class="eyebrow">🌱 평가 길잡이</span>
+    <div class="sec-head"><h2>활동을 잘했는지 생각하며 체크해 보자</h2><span class="page">교과서 178쪽</span></div>
+    <div class="eval"><div>물체에 작용하는 알짜힘과 물체의 운동의 관계를 설명할 수 있는가?</div><div class="stars"></div></div>
+    <div class="eval"><div>힘이 작용하는 방향에 따라 물체의 운동이 어떻게 달라지는지 구별할 수 있는가?</div><div class="stars"></div></div>
+    <div class="eval"><div>일상생활 속 물체의 운동을 세 가지로 분류할 수 있는가?</div><div class="stars"></div></div>
+  </section>
+
+  <footer>미래엔 중학교 과학 1 · 5단원 힘의 작용 · 수업 학습자료</footer>
+</main>
+
+<script>
+(function(){
+  /* ---------- 공통 상호작용 ---------- */
+  function showFb(fb,ok,html){fb.classList.add('show');fb.classList.toggle('ok',ok);fb.classList.toggle('no',!ok);fb.innerHTML=html;}
+  document.querySelectorAll('[data-reveal]').forEach(function(b){
+    b.addEventListener('click',function(){
+      var el=document.getElementById(b.dataset.reveal);
+      b.setAttribute('aria-expanded',el.classList.toggle('show'));
+    });
+  });
+  document.querySelectorAll('.choices').forEach(function(g){
+    var ans=g.dataset.answer, fb=g.nextElementSibling, okHtml=fb.innerHTML;
+    var wrong=fb.dataset.wrong||'다시 생각해 보자!';
+    g.querySelectorAll('.choice').forEach(function(c){
+      c.addEventListener('click',function(){
+        g.querySelectorAll('.choice').forEach(function(x){x.classList.remove('right','wrong')});
+        var ok=c.textContent.trim()===ans;
+        c.classList.add(ok?'right':'wrong');
+        showFb(fb,ok,ok?okHtml:'🤔 '+wrong);
+      });
+    });
+  });
+  document.querySelectorAll('[data-blank]').forEach(function(b){
+    var q=b.closest('.q'), inps=q.querySelectorAll('.blank'), fb=q.querySelector('.fb');
+    function go(){
+      var all=true, empty=false;
+      inps.forEach(function(inp){
+        var v=inp.value.replace(/\s/g,''), ok=inp.dataset.ans.split('|').indexOf(v)>-1;
+        if(!v)empty=true; if(!ok)all=false;
+        inp.classList.toggle('right',ok); inp.classList.toggle('wrong',!ok);
+      });
+      showFb(fb,all,all?'정답! 🎉':(empty?'빈칸을 모두 채운 뒤 확인해 보자.':'빨간 빈칸을 다시 생각해 보자. 개념 설명을 다시 읽어 봐요.'));
+    }
+    b.addEventListener('click',go);
+    inps.forEach(function(i){i.addEventListener('keydown',function(e){if(e.key==='Enter')go();});});
+  });
+  document.querySelectorAll('[data-match-check]').forEach(function(b){
+    var q=b.closest('.q'), fb=q.querySelector('.fb');
+    b.addEventListener('click',function(){
+      var all=true;
+      q.querySelectorAll('select').forEach(function(s){var ok=s.value===s.dataset.ans;if(!ok)all=false;s.classList.toggle('right',ok);s.classList.toggle('wrong',!ok);});
+      showFb(fb,all,all?fb.dataset.ok:fb.dataset.no);
+    });
+  });
+  document.querySelectorAll('.pick').forEach(function(p){
+    p.addEventListener('click',function(){p.setAttribute('aria-pressed',p.getAttribute('aria-pressed')!=='true');});
+  });
+  document.querySelectorAll('[data-bogi-check]').forEach(function(b){
+    var q=b.closest('.q'), box=q.querySelector('.bogi'), fb=q.querySelector('.fb');
+    b.addEventListener('click',function(){
+      var sel=[].slice.call(box.querySelectorAll('.pick[aria-pressed="true"]')).map(function(p){return p.dataset.k;}).join(',');
+      if(!sel){showFb(fb,false,'보기에서 답을 먼저 골라 보자.');return;}
+      var ok=sel===box.dataset.answer; showFb(fb,ok,ok?fb.dataset.ok:fb.dataset.no);
+    });
+  });
+  document.querySelectorAll('.stars').forEach(function(s){
+    for(var i=1;i<=3;i++)(function(n){
+      var b=document.createElement('button');b.textContent='★';b.setAttribute('aria-label','별 '+n+'개');
+      b.addEventListener('click',function(){s.querySelectorAll('button').forEach(function(x,k){x.classList.toggle('on',k<n)})});
+      s.appendChild(b);
+    })(i);
+  });
+
+
+
+  var NS='http://www.w3.org/2000/svg';
+  function el(t,a,p){var e=document.createElementNS(NS,t);for(var k in a)e.setAttribute(k,a[k]);if(p)p.appendChild(e);return e;}
+  function arrow(g,x1,y1,x2,y2,col,w){
+    var dx=x2-x1,dy=y2-y1,L=Math.hypot(dx,dy); if(L<4)return;
+    var ux=dx/L,uy=dy/L,hl=Math.min(13,L*0.6),hx=x2-ux*hl,hy=y2-uy*hl,nx=-uy*7,ny=ux*7;
+    el('line',{x1:x1,y1:y1,x2:hx,y2:hy,stroke:col,'stroke-width':w||5,'stroke-linecap':'round'},g);
+    el('polygon',{points:x2+','+y2+' '+(hx+nx)+','+(hy+ny)+' '+(hx-nx)+','+(hy-ny),fill:col},g);
+  }
+  var RED='#E0413A', GREEN='#1E9E62';
+
+  /* ---------- 탁구공 바람 시뮬레이션 ---------- */
+  var sv=document.getElementById('msvg'), cse='same', running=false;
+  var V0=2.2, START=30, N=150, STROBE=15;
+  var LABEL={same:'같은 방향',opp:'반대 방향',perp:'수직 방향',obl:'비스듬한 방향'};
+  var RES={same:{sp:'빨라진다 ⬆',dir:'변하지 않는다',t:'속력 증가'},
+           opp:{sp:'느려진다 ⬇',dir:'변하지 않는다',t:'속력 감소'},
+           perp:{sp:'변하지 않는다',dir:'바뀐다 ↪',t:'운동 방향 변화'},
+           obl:{sp:'빨라진다 ⬆',dir:'바뀐다 ↪',t:'속력·운동 방향 모두 변화'}};
+  var done={};
+  function force(c,i,vx,vy){
+    if(i<START) return [0,0];
+    if(c==='same') return [0.03,0];
+    if(c==="opp") return [-0.022,0];
+    if(c==='perp'){ if(i>=START+40) return [0,0]; var sp=Math.hypot(vx,vy); return [-vy/sp*0.042, vx/sp*0.042]; }
+    if(c==='obl') return [0.018,0.024];
+  }
+  var gBase=el('g',{},sv), gTrail=el('g',{},sv), gNow=el('g',{},sv);
+  function base(){
+    gBase.innerHTML='';
+    el('line',{x1:20,y1:110,x2:660,y2:110,stroke:'#C7D0DC','stroke-width':2,'stroke-dasharray':'6 6'},gBase);
+    var t=el('text',{x:24,y:96,'font-size':13,fill:'#5B6578'},gBase); t.textContent='처음 운동 방향 →';
+  }
+  function ball(g,x,y,op){ el('circle',{cx:x,cy:y,r:11,fill:'#F5A142',stroke:'#D9822B','stroke-width':1.5,opacity:op},g); }
+  function reset(){ gTrail.innerHTML=''; gNow.innerHTML=''; ball(gNow,50,110,1);
+    arrow(gNow,70,140,130,140,GREEN,4); var t=el('text',{x:100,y:160,'text-anchor':'middle','font-size':13,'font-weight':700,fill:GREEN},gNow); t.textContent='운동 방향'; }
+  base(); reset();
+  document.querySelectorAll('#wind button').forEach(function(b){b.addEventListener('click',function(){
+    if(running)return; document.querySelectorAll('#wind button').forEach(function(x){x.setAttribute('aria-pressed',x===b);}); cse=b.dataset.c; reset();
+    document.getElementById('o-speed').textContent='—'; document.getElementById('o-dir').textContent='—';});});
+  var res=document.getElementById('m-result');
+  document.getElementById('roll').addEventListener('click',function(){
+    if(running)return; running=true; reset(); gNow.innerHTML='';
+    var x=50,y=110,vx=V0,vy=0,i=0, stopped=false;
+    document.getElementById('o-speed').textContent='관찰 중…'; document.getElementById('o-dir').textContent='관찰 중…';
+    function frame(){
+      for(var s=0;s<1;s++){
+        var f=force(cse,i,vx,vy); vx+=f[0]; vy+=f[1];
+        if(cse==='perp'){var sp=Math.hypot(vx,vy); vx=vx/sp*V0; vy=vy/sp*V0;}
+        if(cse==='opp'&&vx<=0.05){vx=0;stopped=true;}
+        x+=vx; y+=vy;
+        if(i%STROBE===0) ball(gTrail,x,y,0.35);
+        i++;
+      }
+      gNow.innerHTML=''; ball(gNow,x,y,1);
+      var f2=force(cse,i,vx,vy);
+      if(i>=START && (f2[0]||f2[1]) && !stopped){
+        var L=Math.hypot(f2[0],f2[1]), ux=f2[0]/L, uy=f2[1]/L;
+        // 힘 화살표는 공 쪽을 향해 그림(바람이 불어오는 쪽에서)
+        arrow(gNow,x-ux*62,y-uy*62,x-ux*16,y-uy*16,RED,5);
+        var ft=el('text',{x:x-ux*72,y:y-uy*72-6,'text-anchor':'middle','font-size':13,'font-weight':700,fill:RED},gNow); ft.textContent='힘(바람) 🌬️';
+      }
+      var sp=Math.hypot(vx,vy);
+      if(sp>0.1){ arrow(gNow,x+vx/sp*16,y+vy/sp*16,x+vx/sp*56,y+vy/sp*56,GREEN,4); }
+      if(i<N && !stopped && x<665 && y<320){ requestAnimationFrame(frame); }
+      else{
+        running=false;
+        var r=RES[cse];
+        document.getElementById('o-speed').textContent=r.sp; document.getElementById('o-dir').textContent=r.dir;
+        done[cse]=true; var td=document.getElementById('t-'+cse); td.textContent=r.t; td.className='done';
+        var n=Object.keys(done).length;
+        if(n<4){res.className='result';res.innerHTML='👍 <strong>'+LABEL[cse]+'</strong> 관찰 완료! 다른 방향으로도 바람을 보내 보자. ('+n+'/4)';}
+        else{res.className='result ok';res.innerHTML='<div class="formula">🎉 네 가지 모두 관찰 완료!</div><div>나란한 방향 → <strong>속력</strong> 변화 · 수직 방향 → <strong>운동 방향</strong> 변화 · 비스듬한 방향 → <strong>속력과 운동 방향 모두</strong> 변화. 아래 질문의 빈칸을 채워 보자.</div>';}
+      }
+    }
+    requestAnimationFrame(frame);
+  });
+
+  /* ---------- 운동 분류하기 ---------- */
+  var OPTS=['속력이 변하는 운동','운동 방향이 변하는 운동','속력과 운동 방향이 모두 변하는 운동'];
+  var ITEMS=[['🏔️ 빗면을 내려오는 스키 점프 선수',0],['🎡 대관람차',1],['🏀 농구 선수가 비스듬히 던진 공',2],['🤿 연직 아래로 떨어지는 다이빙 선수',0],['🎠 회전목마',1],['🎢 롤러코스터',2],['⚾ 위로 던져 올라가는 공',0],['🛰️ 지구 주위를 도는 인공위성',1],['🚢 바이킹',2]];
+  var list=document.getElementById('sortlist');
+  ITEMS.forEach(function(it,k){
+    var row=document.createElement('div'); row.className='row';
+    var s='<select data-a="'+it[1]+'" aria-label="'+it[0]+' 분류"><option value="">분류 선택</option>';
+    OPTS.forEach(function(o,j){s+='<option value="'+j+'">'+o+'</option>';}); s+='</select>';
+    row.innerHTML='<span>'+it[0]+'</span>'+s; list.appendChild(row);
+  });
+  document.getElementById('sort-check').addEventListener('click',function(){
+    var n=0,empty=0,sel=list.querySelectorAll('select');
+    sel.forEach(function(s){ if(s.value===''){empty++;s.classList.remove('right','wrong');return;} var ok=s.value===s.dataset.a; if(ok)n++; s.classList.toggle('right',ok); s.classList.toggle('wrong',!ok); });
+    var r=document.getElementById('sort-result');
+    if(empty){r.className='result';r.innerHTML='🙋 아직 '+empty+'개를 분류하지 않았어요.';return;}
+    if(n===sel.length){r.className='result ok';r.innerHTML='<div class="formula">🎉 모두 정답! ('+n+'/'+sel.length+')</div><div>힘이 운동 방향과 <strong>나란하면 속력</strong>, <strong>수직이면 운동 방향</strong>, <strong>비스듬하면 둘 다</strong> 변해요.</div>';}
+    else{r.className='result bad';r.innerHTML='🤔 '+n+'/'+sel.length+' 정답! 빨간 칸을 다시 생각해 보자. 빨라지거나 느려지는지, 방향이 바뀌는지 따로 따져 봐요.';}
+  });
+})();
+</script>
+</body>
+</html>
